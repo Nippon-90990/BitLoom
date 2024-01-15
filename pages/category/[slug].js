@@ -15,7 +15,7 @@ const Category = ({ category, products, slug }) => {
     }, [query]);
 
     const { data, error, isLoading } = useSWR(
-        `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=${pageIndex}&pagination[pageSize]=${maxResult}`,
+        `api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=${pageIndex}&pagination[pageSize]=${maxResult}`,
         fetchDataFromApi,
         {
             fallbackData: products,
@@ -90,7 +90,7 @@ const Category = ({ category, products, slug }) => {
 export default Category;
 
 export async function getStaticPaths() {
-    const category = await fetchDataFromApi("/api/categories?populate=*");
+    const category = await fetchDataFromApi("api/categories?populate=*");
     const paths = category?.data?.map((c) => ({
         params: {
             slug: c.attributes.slug,
@@ -106,10 +106,10 @@ export async function getStaticPaths() {
 // `getStaticPaths` requires using `getStaticProps`
 export async function getStaticProps({ params: { slug } }) {
     const category = await fetchDataFromApi(
-        `/api/categories?filters[slug][$eq]=${slug}`
+        `api/categories?filters[slug][$eq]=${slug}`
     );
     const products = await fetchDataFromApi(
-        `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=1&pagination[pageSize]=${maxResult}`
+        `api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=1&pagination[pageSize]=${maxResult}`
     );
 
     return {
